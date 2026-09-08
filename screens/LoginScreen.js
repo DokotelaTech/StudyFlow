@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.loginContainer}>
@@ -60,7 +60,7 @@ export default function LoginScreen() {
             Don't have an account?
           </Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <Text style={styles.registerLink}> Sign up</Text>
           </TouchableOpacity>
         </View>
