@@ -10,7 +10,7 @@ import {
 
 import { useState } from 'react';
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 import { auth } from '../services/firebase';
 
@@ -22,60 +22,52 @@ export default function SignupScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-
     const handleSignup = async () => {
 
         //Validation, Check if fields are empty
         if (!username || !email || !password || !confirmPassword) {
-            Alert.alert(
-                'Missing information',
-                'Please fill in all fields.'
-            );
+            Alert.alert('Missing information', 'Please fill in all fields.');
             return;
         }
-
 
         // Validation, Check passwords
         if (password !== confirmPassword) {
-            Alert.alert(
-                'Password mismatch',
-                'Passwords do not match.'
-            );
+            Alert.alert('Password mismatch', 'Passwords do not match.');
             return;
         }
 
-
         try {
-
-            const userCredential =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
-
+            // 1. Create the user first
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            
             const user = userCredential.user;
-
+            
+            // 2. Immediately update the profile with the username
+            await updateProfile(user, {
+                displayName: username
+            });
+            
             console.log('User created:', user.uid);
-
+            console.log('Username saved as:', user.displayName);
+            
+            // 3. Show success and navigate
             Alert.alert(
                 'Account Created',
                 'Your StudyFlow account has been created!'
             );
-
+            
             navigation.navigate('Home');
-
+            
         } catch (error) {
-
+            // 4. Handle any errors ONLY here
             console.log('Signup error:', error);
-
-            Alert.alert(
-                'Signup failed',
-                error.message
-            );
+            Alert.alert('Signup failed', `${error.code}\n\n${error.message}`);
         }
     };
-
 
     return (
         <SafeAreaView style={styles.container}>

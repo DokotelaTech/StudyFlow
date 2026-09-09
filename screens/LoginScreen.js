@@ -1,168 +1,242 @@
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
+    View,
+    Text,
+    StyleSheet,
+    SafeAreaView,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+} from 'react-native';
 
-export default function LoginScreen({navigation}) {
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.loginContainer}>
-        
-        <Image
-          style={styles.img}
-          source={{
-            uri: "https://img.icons8.com/liquid-glass-color/1200/user-male-circle.jpg",
-          }}
-        />
+import { useState } from 'react';
 
-        <Text style={styles.heading}>Welcome Back 👋</Text>
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-        <Text style={styles.subHeading}>
-          Sign in to continue to StudyFlow
-        </Text>
+import { auth } from '../services/firebase';
 
-        <View style={styles.form}>
-          <Text style={styles.label}>Username</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your username"
-            placeholderTextColor="#9CA3AF"
-          />
+export default function LoginScreen({ navigation }) {
 
-          <Text style={styles.label}>Password</Text>
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#9CA3AF"
-            secureTextEntry
-          />
 
-          <TouchableOpacity>
-            <Text style={styles.forgotPassword}>
-              Forgot password?
-            </Text>
-          </TouchableOpacity>
+    const handleLogin = async () => {
 
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnTxt}>Login</Text>
-          </TouchableOpacity>
-        </View>
+        // Check fields
+        if (!email || !password) {
+            Alert.alert(
+                'Missing information',
+                'Please enter your email and password.'
+            );
+            return;
+        }
 
-        <View style={styles.registerContainer}>
-          <Text style={styles.registerText}>
-            Don't have an account?
-          </Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-            <Text style={styles.registerLink}> Sign up</Text>
-          </TouchableOpacity>
-        </View>
+        try {
 
-      </View>
-    </SafeAreaView>
-  );
+            const userCredential =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            const user = userCredential.user;
+
+            console.log('Logged in user:', user.uid);
+
+            Alert.alert(
+                'Login Successful',
+                'Welcome back to StudyFlow!'
+            );
+
+            navigation.navigate('Home');
+
+        } catch (error) {
+
+            console.log('Login error:', error);
+
+            Alert.alert(
+                'Login failed',
+                'Invalid email or password.'
+            );
+        }
+    };
+
+
+    return (
+        <SafeAreaView style={styles.container}>
+
+            <View style={styles.loginContainer}>
+
+                <Text style={styles.heading}>
+                    Welcome Back
+                </Text>
+
+                <Text style={styles.subHeading}>
+                    Login to continue using StudyFlow
+                </Text>
+
+
+                <View style={styles.form}>
+
+                    {/* Email */}
+
+                    <Text style={styles.label}>
+                        Email
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter your email"
+                        placeholderTextColor="#9CA3AF"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+
+
+                    {/* Password */}
+
+                    <Text style={styles.label}>
+                        Password
+                    </Text>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter your password"
+                        placeholderTextColor="#9CA3AF"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+
+
+                    {/* Login Button */}
+
+                    <TouchableOpacity
+                        style={styles.btn}
+                        activeOpacity={0.8}
+                        onPress={handleLogin}
+                    >
+                        <Text style={styles.btnTxt}>
+                            Login
+                        </Text>
+                    </TouchableOpacity>
+
+
+                    {/* Signup */}
+
+                    <View style={styles.signupContainer}>
+
+                        <Text style={styles.signupText}>
+                            Don't have an account?
+                        </Text>
+
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate('Signup')
+                            }
+                        >
+                            <Text style={styles.signupLink}>
+                                Sign Up
+                            </Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+                </View>
+
+            </View>
+
+        </SafeAreaView>
+    );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F5F7FB",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
 
-  loginContainer: {
-    width: "100%",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#F8FAFC',
+    },
 
-  img: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-    marginBottom: 20,
-    borderRadius: 50,
-  },
+    loginContainer: {
+        flex: 1,
+        paddingHorizontal: 25,
+        paddingTop: 70,
+    },
 
-  heading: {
-    fontWeight: "700",
-    fontSize: 28,
-    fontFamily: "Poppins",
-    textAlign: "center",
-    color: "#1F2937",
-  },
+    heading: {
+        fontSize: 30,
+        fontWeight: '700',
+        color: '#1E293B',
+        marginBottom: 8,
+    },
 
-  subHeading: {
-    fontSize: 14,
-    textAlign: "center",
-    color: "#6B7280",
-    marginTop: 6,
-    marginBottom: 30,
-  },
+    subHeading: {
+        fontSize: 15,
+        color: '#64748B',
+        marginBottom: 40,
+        lineHeight: 22,
+    },
 
-  form: {
-    width: "100%",
-  },
+    form: {
+        width: '100%',
+    },
 
-  label: {
-    fontWeight: "600",
-    fontSize: 14,
-    color: "#374151",
-    marginBottom: 8,
-  },
+    label: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#334155',
+        marginBottom: 8,
+        marginTop: 15,
+    },
 
-  input: {
-    width: "100%",
-    height: 52,
-    borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    backgroundColor: "#FFFFFF",
-    marginBottom: 18,
-  },
+    input: {
+        height: 52,
+        borderWidth: 1,
+        borderColor: '#CBD5E1',
+        borderRadius: 10,
+        paddingHorizontal: 15,
+        fontSize: 15,
+        color: '#1E293B',
+        backgroundColor: '#FFFFFF',
+    },
 
-  forgotPassword: {
-    textAlign: "right",
-    color: "#4F46E5",
-    fontWeight: "600",
-    marginBottom: 24,
-  },
+    btn: {
+        height: 52,
+        backgroundColor: '#4F46E5',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
+    },
 
-  btn: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#4F46E5",
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    btnTxt: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: '700',
+    },
 
-  btnTxt: {
-    fontWeight: "700",
-    color: "#FFFFFF",
-    fontSize: 16,
-  },
+    signupContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 25,
+    },
 
-  registerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 24,
-  },
+    signupText: {
+        color: '#64748B',
+        fontSize: 14,
+    },
 
-  registerText: {
-    color: "#6B7280",
-  },
+    signupLink: {
+        color: '#4F46E5',
+        fontSize: 14,
+        fontWeight: '700',
+        marginLeft: 5,
+    },
 
-  registerLink: {
-    color: "#4F46E5",
-    fontWeight: "700",
-  },
 });
