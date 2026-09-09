@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
 
                 </Text>
 
-                {/* top 3 card for dshaboard */}
+                {/* top 3 card for dashboard */}
                 <View style={styles.cardContainer}>
 
                     <View style={styles.cards}>
@@ -51,8 +51,8 @@ export default function HomeScreen({ navigation }) {
             <ScrollView>
 
             <View style={styles.content}>
-                
-                {/* 🎯 TODO 3: Replace "Student" with the user's displayName */}
+
+                <Text>Upcoming Tasks</Text>
 
                 <TouchableOpacity style={styles.btn} onPress={handleLogout}>
                     <Text style={styles.btnTxt}>Log Out</Text>
