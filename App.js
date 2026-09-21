@@ -83,8 +83,8 @@ export default function App() {
           />
         ) : (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="Login" options={{ headerShown: false }}  component={LoginScreen} />
+            <Stack.Screen name="Signup" options={{ headerShown: false }} component={SignupScreen} />
           </>
         )}
       </Stack.Navigator>

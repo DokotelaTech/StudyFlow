@@ -6,6 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
+    ScrollView,
 } from 'react-native';
 
 import { useState } from 'react';
@@ -70,7 +71,7 @@ export default function SignupScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.container}>
 
             <View style={styles.signupContainer}>
 
@@ -186,7 +187,7 @@ export default function SignupScreen({ navigation }) {
 
             </View>
 
-        </SafeAreaView>
+        </ScrollView>
     );
 }
 

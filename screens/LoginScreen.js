@@ -2,10 +2,11 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
+    // SafeAreaView,
+    ScrollView,
     TextInput,
     TouchableOpacity,
-    Alert,
+    Image,
 } from 'react-native';
 
 import { useState } from 'react';
@@ -19,16 +20,16 @@ export default function LoginScreen({ navigation }) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
 
     const handleLogin = async () => {
 
         // Check fields
         if (!email || !password) {
-            Alert.alert(
-                'Missing information',
-                'Please enter your email and password.'
-            );
+            Alert.alert('Missing information','Please enter your email and password.');
+
+            setErrorMsg('Please enter your email and password.');
             return;
         }
 
@@ -56,6 +57,7 @@ export default function LoginScreen({ navigation }) {
         } catch (error) {
 
             console.log('Login error:', error);
+            setErrorMsg('Invalid email or password.');
 
             Alert.alert(
                 'Login failed',
@@ -66,10 +68,11 @@ export default function LoginScreen({ navigation }) {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.container}>
 
             <View style={styles.loginContainer}>
 
+                <Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGk-piaMj-n2TkqRj0rDm179qigocTLVvndFtN0cNxlzNUMWgk6Gfz6O0&s=10' }} style={styles.image} alt="Logo" />
                 <Text style={styles.heading}>
                     Welcome Back
                 </Text>
@@ -151,7 +154,7 @@ export default function LoginScreen({ navigation }) {
 
             </View>
 
-        </SafeAreaView>
+        </ScrollView>
     );
 }
 
@@ -166,21 +169,22 @@ const styles = StyleSheet.create({
     loginContainer: {
         flex: 1,
         paddingHorizontal: 25,
-        paddingTop: 70,
+        paddingTop: 45,
     },
 
     heading: {
         fontSize: 30,
         fontWeight: '700',
         color: '#1E293B',
-        marginBottom: 8,
+        marginBottom: 0,
+        margin: 'auto',
     },
-
     subHeading: {
         fontSize: 15,
         color: '#64748B',
-        marginBottom: 40,
+        marginBottom: 0,
         lineHeight: 22,
+        margin: 'auto',
     },
 
     form: {
@@ -238,5 +242,11 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginLeft: 5,
     },
-
+    image:{
+        marginTop: 0,
+        width: '30%',
+        height: '30%',
+        marginBottom: 20,
+        margin: 'auto',
+    }
 });

@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
         //  fontFamily: 'san'
         color: 'grey'
          },
-
     btn: {
          height: 52
          , backgroundColor: '#EF4444',
