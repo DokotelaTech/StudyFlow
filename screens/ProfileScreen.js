@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, SafeAreaView } from 'react-native';
 import { auth } from '../services/firebase';
 import { signOut } from 'firebase/auth';
+import { StatusBar } from 'expo-status-bar';
 
 export default function ProfileScreen({ navigation }) {
     const user = auth.currentUser;
@@ -29,8 +30,8 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.safeArea}>
+            <StatusBar style="auto" />
             <ScrollView contentContainerStyle={styles.container}>
-                
                 {/* Profile Header Section */}
                 <View style={styles.headerContainer}>
                     <View style={styles.imageRing}>
