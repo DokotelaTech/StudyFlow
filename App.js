@@ -40,10 +40,11 @@ function MainTabs() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Subjects" component={SubjectScreen} />
-      <Tab.Screen name="Add Task" component={addTaskScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      
+      <Tab.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
+      <Tab.Screen name="Subjects" options={{ headerShown: false }} component={SubjectScreen} />
+      <Tab.Screen name="Add Task" options={{ headerShown: false }} component={addTaskScreen} />
+      <Tab.Screen name="Profile" options={{ headerShown: false }} component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

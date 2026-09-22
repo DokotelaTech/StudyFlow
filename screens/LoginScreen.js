@@ -123,12 +123,15 @@ export default function LoginScreen({ navigation }) {
                         style={styles.btn}
                         activeOpacity={0.8}
                         onPress={handleLogin}
-                    >
+                        >
                         <Text style={styles.btnTxt}>
                             Login
                         </Text>
                     </TouchableOpacity>
 
+                        <Text style={styles.errMsg}>
+                            {errorMsg}
+                        </Text>
 
                     {/* Signup */}
 
@@ -142,7 +145,7 @@ export default function LoginScreen({ navigation }) {
                             onPress={() =>
                                 navigation.navigate('Signup')
                             }
-                        >
+                            >
                             <Text style={styles.signupLink}>
                                 Sign Up
                             </Text>
@@ -244,9 +247,17 @@ const styles = StyleSheet.create({
     },
     image:{
         marginTop: 0,
-        width: '30%',
+        width: '33%',
         height: '30%',
         marginBottom: 20,
         margin: 'auto',
+    },
+    errMsg:{
+        margin:'auto',
+        color: 'red',
+        fontSize: 14,
+        marginTop: 10,
+        fontStyle: 'italic',
+        fontWeight: '600',
     }
 });

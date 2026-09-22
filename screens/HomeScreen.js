@@ -1,127 +1,158 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { auth } from '../services/firebase';
 
-// Import signOut here
-import { signOut } from 'firebase/auth';
 export default function HomeScreen({ navigation }) {
 
-    //  Get the current user from Firebase
     const user = auth.currentUser;
 
-    console.log(user.displayName)
-
-    const handleLogout = async () => {
-
-        try{
-            await signOut(auth);
-            navigation.navigate('Login');
-        }catch(error){
-            console.log('Logout error:', error);
-        }
-    };
-
     return (
-        <SafeAreaView style={styles.container}>
-            
-                <Text style={styles.heading}>
-                    Hi, {user.displayName}
+        <ScrollView style={styles.container}>
 
-                </Text>
+            <View style={styles.header}>
 
-                {/* top 3 card for dashboard */}
-                <View style={styles.cardContainer}>
+                <View>
+                    <Text style={styles.heading}>
+                        Hi, {user?.displayName || 'User'} 👋
+                    </Text>
 
-                    <View style={styles.cards}>
-                        <Text style={styles.cardName}>Today's tasks</Text>
-                        <Text style={styles.cardNumber}>0</Text>
-                    </View>
-
-                    <View style={styles.cards}>
-                        <Text style={styles.cardName}>Completed</Text>
-                        <Text style={styles.cardNumber}>0</Text>
-                    </View>
-
-                    <View style={styles.cards}>
-                        <Text style={styles.cardName}>Streak</Text>
-                         <Text style={styles.cardNumber}>0</Text>
-                    </View>
-
+                    <Text style={styles.welcome}>
+                        Welcome to Dashboard!
+                    </Text>
                 </View>
 
-            <ScrollView>
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg'
+                    }}
+                />
+
+            </View>
+
+            <View style={styles.cardContainer}>
+
+                <View style={styles.card}>
+                    <Text style={styles.cardName}>Today's Tasks</Text>
+                    <Text style={styles.cardNumber}>0</Text>
+                </View>
+
+                <View style={styles.card}>
+                    <Text style={styles.cardName}>Completed</Text>
+                    <Text style={styles.cardNumber}>0</Text>
+                </View>
+
+                <View style={styles.card}>
+                    <Text style={styles.cardName}>Streak</Text>
+                    <Text style={styles.cardNumber}>0</Text>
+                </View>
+
+            </View>
 
             <View style={styles.content}>
 
-                <Text>Upcoming Tasks</Text>
+                <Text style={styles.sectionTitle}>
+                    Upcoming Tasks
+                </Text>
 
-                <TouchableOpacity style={styles.btn} onPress={handleLogout}>
-                    <Text style={styles.btnTxt}>Log Out</Text>
-                </TouchableOpacity>
+                <View style={styles.emptyBox}>
+                    <Text style={styles.emptyText}>
+                        No upcoming tasks
+                    </Text>
+                </View>
 
             </View>
-            </ScrollView>
-        </SafeAreaView>
+
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { 
+
+    container: {
         flex: 1,
-        backgroundColor: '#F8FAFC'
-        },
+        backgroundColor: '#F8FAFC',
+    },
 
-    content:{ 
-        padding:25,
-        paddingTop: 50,
-        flex: 1,
-        justifyContent: 'center'
-     },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 20,
+        paddingTop: 30,
+    },
 
-    heading: { 
-        top: 15,
-        fontSize: 17,
-         fontWeight: '700',
-         marginLeft: 16,
-        //  fontFamily: 'san'
-        color: 'grey'
-         },
-    btn: {
-         height: 52
-         , backgroundColor: '#EF4444',
-          borderRadius: 10,
-           justifyContent: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-         },
+    heading: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#334155',
+        marginBottom: 5,
+    },
 
-    btnTxt: {
-         color: '#FFFFFF',
-          fontSize: 16,
-           fontWeight: '700',
-         },
+    welcome: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#4F46E5',
+    },
+
+    image: {
+        width: 55,
+        height: 55,
+        borderRadius: 30,
+    },
 
     cardContainer: {
-        top: 15,
         flexDirection: 'row',
-        gap: 15,
-        margin: 'auto'
+        gap: 10,
+        paddingHorizontal: 20,
     },
-    cards: {
-        backgroundColor: "#ebdbdb",
-        borderRadius: 10,
+
+    card: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
         padding: 15,
+        alignItems: 'center',
+        elevation: 2,
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
     },
-    cardNumber:{
-        fontWeight: 'bold',
-        margin: "auto",
-        fontSize: 20
+
+    cardName: {
+        fontSize: 12,
+        fontWeight: '600',
+        color: '#64748B',
+        textAlign: 'center',
     },
-    cardName:{
-        fontWeight: 'bold',
-        margin: "auto",
-        fontSize: 14 
-       }
+
+    cardNumber: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: '#4F46E5',
+        marginTop: 8,
+    },
+
+    content: {
+        padding: 20,
+        marginTop: 20,
+    },
+
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#1E293B',
+        marginBottom: 15,
+    },
+
+    emptyBox: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 25,
+        alignItems: 'center',
+    },
+
+    emptyText: {
+        color: '#94A3B8',
+        fontSize: 14,
+    },
+
 });
-
-
-
